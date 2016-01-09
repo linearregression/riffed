@@ -11,8 +11,8 @@ defmodule Utils do
     try do
       case Process.whereis(module_name) do
         pid when is_pid(pid) ->
-          Agent.stop(pid)
-          :dead === Utils.wait_to_die(pid)
+          :ok == Agent.stop(pid)
+          :dead == Utils.wait_to_die(pid)
         _ ->
           nil
       end
