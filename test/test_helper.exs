@@ -4,7 +4,7 @@ defmodule Utils do
 
   def ensure_pid_stopped(server_pid) do
     Process.exit(server_pid, :normal)
-    wait_to_die(server_pid)
+    :dead === wait_to_die(server_pid)
   end
 
   def ensure_agent_stopped(module_name) do
@@ -12,7 +12,7 @@ defmodule Utils do
       case Process.whereis(module_name) do
         pid when is_pid(pid) ->
           Agent.stop(pid)
-          Utils.wait_to_die(pid)
+          :dead === Utils.wait_to_die(pid)
         _ ->
           nil
       end
@@ -25,6 +25,7 @@ defmodule Utils do
     if Process.alive?(pid) do
       wait_to_die(pid)
     end
+    :dead
   end
 end
 
